@@ -10,15 +10,21 @@ export default class App extends React.Component {
     const date = new Date()
     this.state = {
       questions: questions,
-      userId: 1234,
+      userId: null,
       currentDate: date.getDate(),
       currentQuestion: "",
       currentQuestionId: 1,
       questionsToAnswer: true,
       scaleButton: false
     }
+    this.getToken()
     // For testing
     this.resetState();
+  }
+
+  async getToken() {
+    const token = await Notifier.getUnqiueId();
+    this.setState({userId: token})
   }
 
   async resetState() {

@@ -80,6 +80,10 @@ const Notifier = {
 
   stopNotifications() {
     Notifications.cancelAllScheduledNotificationsAsync();
+  },
+
+  getUnqiueId() {
+    return Notifications.getExpoPushTokenAsync();
   }
 
 }
