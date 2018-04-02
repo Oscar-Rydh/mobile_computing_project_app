@@ -14,16 +14,18 @@ import moment from 'moment';
 const feathers = require('@feathersjs/feathers');
 const rest = require('@feathersjs/rest-client');
 
-let FEATHERS_APP = null
+let FEATHERS_APP = undefined
 
 export default class App extends React.Component {
 
   state = {
+    isSmoker: undefined,
+    drinksAlcohol: undefined,
     questions: [],
     answeredQuestions: [],
     textInput: "",
     currentDate: new Date().getDate(),
-    token: null
+    token: undefined
   }
 
   async componentDidMount() {
@@ -47,10 +49,11 @@ export default class App extends React.Component {
     const storedState = await this.getState()
     if (storedState !== null && storedState.currentDate === this.state.currentDate) {
       answeredQuestions = storedState.answeredQuestions
+      this.setState({ isSmoker: storedState.isSmoker, drinksAlcohol: storedState.drinksAlcohol })
     }
 
     questions = questions.filter(q => !answeredQuestions.includes(q.id))
-
+    console.log(storedState)
     this.setState({
       questions: questions,
       answeredQuestions: answeredQuestions,
@@ -66,7 +69,7 @@ export default class App extends React.Component {
     if (process.env.NODE_ENV === 'production') {
       URI = 'https://mobile-computing-project.herokuapp.com'
     } else {
-      URI = 'SET LOCAL SERVER ADDRESS HERE'
+      URI = 'http://143.248.217.57:3030'
     }
     const restClient = rest(URI)
     // Configure an AJAX library (see below) with that client 
@@ -106,6 +109,13 @@ export default class App extends React.Component {
       return null;
       // Error retrieving data
     }
+  }
+
+  async _setDrinksAlcohol(drinksAlcohol) {
+    await this.setState({ drinksAlcohol }, this.saveState);
+  }
+  async _setIsSmoker(isSmoker) {
+    await this.setState({ isSmoker }, this.saveState);
   }
 
   _registerAnswer(question, answer) {
@@ -211,8 +221,65 @@ export default class App extends React.Component {
     )
   }
 
+
+  _renderIsSmoker() {
+    return (
+      <View style={styles.container}>
+        <Text>Question: Do you ever smoke? </Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button} >
+            <Button
+              onPress={() => this._setIsSmoker(true)}
+              title="yes"
+            />
+          </View>
+          <View style={styles.button} >
+            <Button style={styles.button}
+              onPress={() => this._setIsSmoker(false)}
+              title="no"
+            />
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  _renderDrinksAlcohol() {
+    return (
+      <View style={styles.container}>
+        <Text>Question: Do you ever drink alcohol? </Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button} >
+            <Button
+              onPress={() => this._setDrinksAlcohol(true)}
+              title="yes"
+            />
+          </View>
+          <View style={styles.button} >
+            <Button style={styles.button}
+              onPress={() => this._setDrinksAlcohol(false)}
+              title="no"
+            />
+          </View>
+        </View>
+      </View>
+    )
+  }
+
   render() {
     const question = this.state.questions[0]
+
+    if (this.state.isSmoker === undefined) {
+      return (
+        this._renderIsSmoker()
+      )
+    }
+
+    if (this.state.drinksAlcohol === undefined) {
+      return (
+        this._renderDrinksAlcohol()
+      )
+    }
 
     if (!question) {
       return (
