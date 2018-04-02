@@ -1,26 +1,60 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  AsyncStorage,
+  TextInput
+} from 'react-native';
 import Notifier from './util/notifier';
-import questions from './util/questions';
 import QuestionID from './util/QuestionID'
+import Questions from './Questions';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props)
-    const date = new Date()
-    this.state = {
-      questions: questions,
-      userId: 1234,
-      currentDate: date.getDate(),
-      currentQuestion: "",
-      currentQuestionId: 1,
-      questionsToAnswer: true,
-      scaleButton: false
-    }
-    // For testing
-    this.resetState();
+
+  state = {
+    questions: [],
+    answeredQuestions: [],
+    userId: 1234,
+    textInput: "",
+    currentDate: new Date().getDate(),
   }
 
+  async componentDidMount() {
+
+    await Notifier.stopNotifications();
+    Notifier.startAllNotifications();
+
+    // Set initial questions
+    let questions = []
+    const askMorning = true;
+    const askLunch = true;
+    const askDinner = true;
+    const askAllDay = true;
+    if (askMorning) questions = questions.concat(Object.values(Questions.morning))
+    if (askLunch) questions = questions.concat(Object.values(Questions.lunch))
+    if (askDinner) questions = questions.concat(Object.values(Questions.dinner))
+    if (askAllDay) questions = questions.concat(Object.values(Questions.all_day))
+
+    let answeredQuestions = []
+
+    const storedState = await this.getState()
+    if (storedState !== null && storedState.currentDate === this.state.currentDate) {
+      answeredQuestions = storedState.answeredQuestions
+    }
+
+    questions = questions.filter(q => !answeredQuestions.includes(q.id))
+
+    this.setState({
+      questions: questions,
+      answeredQuestions: answeredQuestions
+    })
+  }
+
+  /**
+   * Used for testing
+   */
   async resetState() {
     try {
       await AsyncStorage.removeItem('@StateStore:state');
@@ -53,107 +87,151 @@ export default class App extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    let result = await
-      Notifier.stopNotifications();
-    Notifier.startAllNotifications();
-    const storedState = await this.getState()
-    if (storedState !== null && storedState.currentDate === this.state.currentDate) {
-      this.setState(storedState);
-    }
-    this._setCurrentQuestion();
+  _registerAnswer(question) {
+    // Save answer in backend
+    console.log(question)
+
+    // Set the question as answered
+    const answeredQuestions = this.state.answeredQuestions.concat([question.id])
+    const questions = this.state.questions.slice(1)
+    this.setState({
+      answeredQuestions: answeredQuestions,
+      questions: questions,
+      textInput: ""
+    }, this.saveState)
   }
 
-  async _updateQuestionList(buttonValue) {
-    delete this.state.questions[this.state.currentQuestionId];
-    const newId = parseInt(this.state.currentQuestionId) + 1;
-    await this.setState({ questions: this.state.questions, currentQuestionId: newId })
-    this.saveState();
-    this._setCurrentQuestion();
-  }
 
-  // Hur ska vi göra detta? 
-  _setCurrentQuestion() {
-    const date = new Date()
-    const currentHour = date.getHours();
-    const currentId = this.state.currentQuestionId;
-    if ((currentHour > 5 && currentId < 19) ||
-      (currentHour > 11 && currentId < 35) ||
-      (currentHour > 16 && currentId < 51) ||
-      currentHour > 21
-    ) {
-      this.setState({ currentQuestion: this.state.questions[this.state.currentQuestionId], questionsToAnswer: true })
-      if (currentId === 18 || currentId === 19 || currentId === 34 || currentId === 35 || currentId === 50 ||
-        currentId === 51 || currentId === 58 || currentId === 59) {
-          this.setState({isScale: true})
-        } else {
-          this.setState({isScale: false})
-        }
-    } else {
-      this.setState({ currentQuestion: "Please wait before answering more questions", questionsToAnswer: false, isScale: false })
-    }
-  }
+  // async _updateQuestionList(buttonValue) {
 
-  _renderYesNoButtons() {
-    if (this.state.questionsToAnswer && !this.state.isScale) {
-      return (
-        <View style={styles.buttonContainer}>
-          <View style={styles.button} >
-            <Button
-              onPress={() => this._updateQuestionList(0)}
-              title="yes"
-            />
-          </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(1)}
-              title="no"
-            />
-          </View>
+  //   delete this.state.questions[this.state.currentQuestionId];
+  //   const newId = parseInt(this.state.currentQuestionId) + 1;
+  //   await this.setState({ questions: this.state.questions, currentQuestionId: newId })
+  //   this.saveState();
+  //   this._setCurrentQuestion();
+  // }
+
+  // // Hur ska vi göra detta? 
+  // _setCurrentQuestion() {
+  //   const date = new Date()
+  //   const currentHour = date.getHours();
+  //   const currentId = this.state.currentQuestionId;
+  //   if ((currentHour > 5 && currentId < 19) ||
+  //     (currentHour > 11 && currentId < 35) ||
+  //     (currentHour > 16 && currentId < 51) ||
+  //     currentHour > 21
+  //   ) {
+  //     this.setState({ currentQuestion: this.state.questions[this.state.currentQuestionId], questionsToAnswer: true })
+  //     if (currentId === 18 || currentId === 19 || currentId === 34 || currentId === 35 || currentId === 50 ||
+  //       currentId === 51 || currentId === 58 || currentId === 59) {
+  //       this.setState({ isScale: true })
+  //     } else {
+  //       this.setState({ isScale: false })
+  //     }
+  //   } else {
+  //     this.setState({ currentQuestion: "Please wait before answering more questions", questionsToAnswer: false, isScale: false })
+  //   }
+  // }
+
+  _renderYesNoButtons(question) {
+    return (
+      <View style={styles.buttonContainer}>
+        <View style={styles.button} >
+          <Button
+            onPress={() => {
+              this._registerAnswer(question, true)
+            }}
+            title="yes"
+          />
         </View>
-      )
-    }
+        <View style={styles.button} >
+          <Button style={styles.button}
+            onPress={() => {
+              this._registerAnswer(question, false)
+            }}
+            title="no"
+          />
+        </View>
+      </View>
+    )
   }
 
-  _renderScaleButtons() {
-    if (this.state.questionsToAnswer && this.state.isScale) {
-      return (
-        <View style={styles.buttonContainer}>
-          <View style={styles.button} >
-            <Button
-              onPress={() => this._updateQuestionList(1)}
-              title="1"
-            />
-          </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(2)}
-              title="2"
-            />
-          </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(3)}
-              title="3"
-            />
-          </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(4)}
-              title="4"
-            />
-          </View>
+  _renderScaleButtons(question) {
+    return (
+      <View style={styles.buttonContainer}>
+        <View style={styles.button} >
+          <Button
+            onPress={() => {
+              this._registerAnswer(question, 1)
+            }}
+            title="1"
+          />
         </View>
-      )
-    }
+        <View style={styles.button} >
+          <Button style={styles.button}
+            onPress={() => {
+              this._registerAnswer(question, 2)
+            }}
+            title="2"
+          />
+        </View>
+        <View style={styles.button} >
+          <Button style={styles.button}
+            onPress={() => {
+              this._registerAnswer(question, 3)
+            }}
+            title="3"
+          />
+        </View>
+        <View style={styles.button} >
+          <Button style={styles.button}
+            onPress={() => {
+              this._registerAnswer(question, 4)
+            }}
+            title="4"
+          />
+        </View>
+      </View>
+    )
+  }
+
+  _renderTextInput(question) {
+    return (
+      <View>
+        <TextInput
+          autoFocus
+          multiline
+          value={this.state.textInput}
+          onChangeText={text => this.setState({ textInput: text })}
+        />
+        <Button style={styles.button}
+          onPress={() => {
+            this._registerAnswer(question, this.state.textInput)
+          }}
+          title="Save"
+        />
+      </View>
+    )
   }
 
   render() {
+    const question = this.state.questions[0]
+
+    if (!question) {
+      return (
+        <View style={styles.container}>
+          <Text>Atta boy, you have answered all your questions!</Text>
+        </View>
+      )
+    }
+
+    // {question.type === 'text' && this._renderTextInput()}
     return (
       <View style={styles.container}>
-        <Text>Question: {this.state.currentQuestion}</Text>
-        {this._renderYesNoButtons()}
-        {this._renderScaleButtons()}
+        <Text>Question: {question.question}</Text>
+        {question.type === 'boolean' && this._renderYesNoButtons(question)}
+        {question.type === 'scale' && this._renderScaleButtons(question)}
+        {question.type === 'text' && this._renderTextInput(question)}
       </View>
     );
   }
