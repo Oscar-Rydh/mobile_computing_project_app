@@ -25,7 +25,7 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    
+
     await Notifier.stopNotifications();
     Notifier.startAllNotifications();
 
@@ -45,7 +45,7 @@ export default class App extends React.Component {
     const storedState = await this.getState()
     if (storedState !== null && storedState.currentDate === this.state.currentDate) {
       answeredQuestions = storedState.answeredQuestions
-      this.setState({isSmoker: storedState.isSmoker, drinksAlcohol: storedState.drinksAlcohol})
+      this.setState({ isSmoker: storedState.isSmoker, drinksAlcohol: storedState.drinksAlcohol })
     }
 
     questions = questions.filter(q => !answeredQuestions.includes(q.id))
@@ -93,10 +93,10 @@ export default class App extends React.Component {
   }
 
   async _setDrinksAlcohol(drinksAlcohol) {
-    await this.setState({drinksAlcohol}, this.saveState);
+    await this.setState({ drinksAlcohol }, this.saveState);
   }
   async _setIsSmoker(isSmoker) {
-    await this.setState({isSmoker}, this.saveState);
+    await this.setState({ isSmoker }, this.saveState);
   }
 
   _registerAnswer(question) {
@@ -196,51 +196,47 @@ export default class App extends React.Component {
 
 
   _renderIsSmoker() {
-    if (this.state.isSmoker === null) {
-      return (
-        <View style={styles.container}>
-          <Text>Question: Do you ever smoke? </Text>
-          <View style={styles.buttonContainer}>
-            <View style={styles.button} >
-              <Button
-                onPress={() => this._setIsSmoker(true)}
-                title="yes"
-              />
-            </View>
-            <View style={styles.button} >
-              <Button style={styles.button}
-                onPress={() => this._setIsSmoker(false)}
-                title="no"
-              />
-            </View>
+    return (
+      <View style={styles.container}>
+        <Text>Question: Do you ever smoke? </Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button} >
+            <Button
+              onPress={() => this._setIsSmoker(true)}
+              title="yes"
+            />
+          </View>
+          <View style={styles.button} >
+            <Button style={styles.button}
+              onPress={() => this._setIsSmoker(false)}
+              title="no"
+            />
           </View>
         </View>
-      )
-    }
+      </View>
+    )
   }
 
   _renderDrinksAlcohol() {
-    if (this.state.drinksAlcohol === null) {
-      return (
-        <View style={styles.container}>
-          <Text>Question: Do you ever drink alcohol? </Text>
-          <View style={styles.buttonContainer}>
-            <View style={styles.button} >
-              <Button
-                onPress={() => this._setDrinksAlcohol(true)}
-                title="yes"
-              />
-            </View>
-            <View style={styles.button} >
-              <Button style={styles.button}
-                onPress={() => this._setDrinksAlcohol(false)}
-                title="no"
-              />
-            </View>
+    return (
+      <View style={styles.container}>
+        <Text>Question: Do you ever drink alcohol? </Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button} >
+            <Button
+              onPress={() => this._setDrinksAlcohol(true)}
+              title="yes"
+            />
+          </View>
+          <View style={styles.button} >
+            <Button style={styles.button}
+              onPress={() => this._setDrinksAlcohol(false)}
+              title="no"
+            />
           </View>
         </View>
-      )
-    }
+      </View>
+    )
   }
 
   render() {
