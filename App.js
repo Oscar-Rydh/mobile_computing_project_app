@@ -19,6 +19,7 @@ export default class App extends React.Component {
     userId: 1234,
     textInput: "",
     currentDate: new Date().getDate(),
+    token: null
   }
 
   async componentDidMount() {
@@ -48,7 +49,8 @@ export default class App extends React.Component {
 
     this.setState({
       questions: questions,
-      answeredQuestions: answeredQuestions
+      answeredQuestions: answeredQuestions,
+      token: await Notifier.getUnqiueId()
     })
   }
 
@@ -100,38 +102,6 @@ export default class App extends React.Component {
       textInput: ""
     }, this.saveState)
   }
-
-
-  // async _updateQuestionList(buttonValue) {
-
-  //   delete this.state.questions[this.state.currentQuestionId];
-  //   const newId = parseInt(this.state.currentQuestionId) + 1;
-  //   await this.setState({ questions: this.state.questions, currentQuestionId: newId })
-  //   this.saveState();
-  //   this._setCurrentQuestion();
-  // }
-
-  // // Hur ska vi göra detta? 
-  // _setCurrentQuestion() {
-  //   const date = new Date()
-  //   const currentHour = date.getHours();
-  //   const currentId = this.state.currentQuestionId;
-  //   if ((currentHour > 5 && currentId < 19) ||
-  //     (currentHour > 11 && currentId < 35) ||
-  //     (currentHour > 16 && currentId < 51) ||
-  //     currentHour > 21
-  //   ) {
-  //     this.setState({ currentQuestion: this.state.questions[this.state.currentQuestionId], questionsToAnswer: true })
-  //     if (currentId === 18 || currentId === 19 || currentId === 34 || currentId === 35 || currentId === 50 ||
-  //       currentId === 51 || currentId === 58 || currentId === 59) {
-  //       this.setState({ isScale: true })
-  //     } else {
-  //       this.setState({ isScale: false })
-  //     }
-  //   } else {
-  //     this.setState({ currentQuestion: "Please wait before answering more questions", questionsToAnswer: false, isScale: false })
-  //   }
-  // }
 
   _renderYesNoButtons(question) {
     return (
@@ -216,6 +186,8 @@ export default class App extends React.Component {
 
   render() {
     const question = this.state.questions[0]
+
+    console.log(this.state.token)
 
     if (!question) {
       return (
