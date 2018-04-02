@@ -9,6 +9,8 @@ export default class App extends React.Component {
     super(props)
     const date = new Date()
     this.state = {
+      isSmoker: null,
+      drinksAlcohol: null,
       questions: questions,
       userId: null,
       currentDate: date.getDate(),
@@ -19,12 +21,12 @@ export default class App extends React.Component {
     }
     this.getToken()
     // For testing
-    this.resetState();
+   this.resetState();
   }
 
   async getToken() {
     const token = await Notifier.getUnqiueId();
-    this.setState({userId: token})
+    this.setState({ userId: token })
   }
 
   async resetState() {
@@ -89,32 +91,48 @@ export default class App extends React.Component {
       currentHour > 21
     ) {
       this.setState({ currentQuestion: this.state.questions[this.state.currentQuestionId], questionsToAnswer: true })
-      if (currentId === 18 || currentId === 19 || currentId === 34 || currentId === 35 || currentId === 50 ||
-        currentId === 51 || currentId === 58 || currentId === 59) {
-          this.setState({isScale: true})
-        } else {
-          this.setState({isScale: false})
-        }
+      if (currentId === 18 || currentId === 19 || currentId === 34 || currentId === 35 || currentId === 50 ||
+        currentId === 51 || currentId === 58 || currentId === 59) {
+        this.setState({ isScale: true })
+      } else {
+        this.setState({ isScale: false })
+      }
     } else {
       this.setState({ currentQuestion: "Please wait before answering more questions", questionsToAnswer: false, isScale: false })
     }
   }
 
+  async _setIsSmoker(isSmoker){
+    await this.setState({isSmoker})
+    this.saveState();
+  }
+
+  async _setDrinksAlcohol(drinksAlcohol){
+    await this.setState({drinksAlcohol})
+    this.saveState();
+  }
+
+
+
   _renderYesNoButtons() {
-    if (this.state.questionsToAnswer && !this.state.isScale) {
+    if (this.state.questionsToAnswer && !this.state.isScale && 
+      this.state.isSmoker !== null && this.state.drinksAlcohol !== null) {
       return (
-        <View style={styles.buttonContainer}>
-          <View style={styles.button} >
-            <Button
-              onPress={() => this._updateQuestionList(0)}
-              title="yes"
-            />
-          </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(1)}
-              title="no"
-            />
+        <View style={styles.container}>
+          <Text>Question: {this.state.currentQuestion}</Text>
+          <View style={styles.buttonContainer}>
+            <View style={styles.button} >
+              <Button
+                onPress={() => this._updateQuestionList(0)}
+                title="yes"
+              />
+            </View>
+            <View style={styles.button} >
+              <Button style={styles.button}
+                onPress={() => this._updateQuestionList(1)}
+                title="no"
+              />
+            </View>
           </View>
         </View>
       )
@@ -122,32 +140,85 @@ export default class App extends React.Component {
   }
 
   _renderScaleButtons() {
-    if (this.state.questionsToAnswer && this.state.isScale) {
+    if (this.state.questionsToAnswer && this.state.isScale &&
+       this.state.isSmoker !== null && this.state.drinksAlcohol !== null) {
       return (
-        <View style={styles.buttonContainer}>
-          <View style={styles.button} >
-            <Button
-              onPress={() => this._updateQuestionList(1)}
-              title="1"
-            />
+        <View style={styles.container}>
+
+          <Text>Question: {this.state.currentQuestion}</Text>
+          <View style={styles.buttonContainer}>
+            <View style={styles.button} >
+              <Button
+                onPress={() => this._updateQuestionList(1)}
+                title="1"
+              />
+            </View>
+            <View style={styles.button} >
+              <Button style={styles.button}
+                onPress={() => this._updateQuestionList(2)}
+                title="2"
+              />
+            </View>
+            <View style={styles.button} >
+              <Button style={styles.button}
+                onPress={() => this._updateQuestionList(3)}
+                title="3"
+              />
+            </View>
+            <View style={styles.button} >
+              <Button style={styles.button}
+                onPress={() => this._updateQuestionList(4)}
+                title="4"
+              />
+            </View>
           </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(2)}
-              title="2"
-            />
+        </View>
+      )
+    }
+  }
+
+  _renderIsSmoker() {
+    if (this.state.isSmoker === null) {
+      return (
+        <View style={styles.container}>
+          <Text>Question: Do you ever smoke? </Text>
+          <View style={styles.buttonContainer}>
+            <View style={styles.button} >
+              <Button
+                onPress={() => this._setIsSmoker(true)}
+                title="yes"
+              />
+            </View>
+            <View style={styles.button} >
+              <Button style={styles.button}
+                onPress={() => this._setIsSmoker(false)}
+                title="no"
+              />
+            </View>
           </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(3)}
-              title="3"
-            />
-          </View>
-          <View style={styles.button} >
-            <Button style={styles.button}
-              onPress={() => this._updateQuestionList(4)}
-              title="4"
-            />
+        </View>
+      )
+    }
+  }
+
+  _renderDrinksAlcohol() {
+    if (this.state.drinksAlcohol === null) {
+      return (
+        <View style={styles.container}>
+          <Text>Question: Do you ever drink alcohol? </Text>
+          <View style={styles.buttonContainer}>
+            <View style={styles.button} >
+              <Button
+                onPress={() => this._setDrinksAlcohol(true)}
+                title="yes"
+              />
+            </View>
+            <View style={styles.button} >
+              <Button style={styles.button}
+                onPress={() => this._setDrinksAlcohol(false)}
+                title="no"
+              />
+            </View>
           </View>
         </View>
       )
@@ -157,7 +228,8 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Question: {this.state.currentQuestion}</Text>
+        {this._renderIsSmoker()}
+        {this._renderDrinksAlcohol()}
         {this._renderYesNoButtons()}
         {this._renderScaleButtons()}
       </View>
