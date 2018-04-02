@@ -10,13 +10,17 @@ import {
 import Notifier from './util/notifier';
 import QuestionID from './util/QuestionID'
 import Questions from './Questions';
+import moment from 'moment';
+const feathers = require('@feathersjs/feathers');
+const rest = require('@feathersjs/rest-client');
+
+let FEATHERS_APP = null
 
 export default class App extends React.Component {
 
   state = {
     questions: [],
     answeredQuestions: [],
-    userId: 1234,
     textInput: "",
     currentDate: new Date().getDate(),
     token: null
@@ -52,6 +56,21 @@ export default class App extends React.Component {
       answeredQuestions: answeredQuestions,
       token: await Notifier.getUnqiueId()
     })
+
+    /**
+     * Configure feathers app
+     */
+    FEATHERS_APP = feathers();
+    // Connect to a different URL
+    let URI = null
+    if (process.env.NODE_ENV === 'production') {
+      URI = 'https://mobile-computing-project.herokuapp.com'
+    } else {
+      URI = 'SET LOCAL SERVER ADDRESS HERE'
+    }
+    const restClient = rest(URI)
+    // Configure an AJAX library (see below) with that client 
+    FEATHERS_APP.configure(restClient.fetch(window.fetch));
   }
 
   /**
@@ -89,9 +108,17 @@ export default class App extends React.Component {
     }
   }
 
-  _registerAnswer(question) {
+  _registerAnswer(question, answer) {
     // Save answer in backend
-    console.log(question)
+    const date = moment()
+    FEATHERS_APP.service('entries').create({
+      question: question.question,
+      question_id: question.id,
+      answer: answer,
+      date: date.format('DD/MM/YYYY'), // TODO: Is this how we wanna represent date?
+      time: date.format('HH:mm'), // TODO: Is this how we wanna represent time?
+      user_id: this.state.token
+    })
 
     // Set the question as answered
     const answeredQuestions = this.state.answeredQuestions.concat([question.id])
@@ -186,8 +213,6 @@ export default class App extends React.Component {
 
   render() {
     const question = this.state.questions[0]
-
-    console.log(this.state.token)
 
     if (!question) {
       return (
