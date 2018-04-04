@@ -160,7 +160,7 @@ export default class App extends React.Component {
             onPress={() => {
               this._registerAnswer(question, true)
             }}
-            title="yes"
+            title={question.yesLabel ? question.yesLabel : 'Yes'}
           />
         </View>
         <View style={styles.button} >
@@ -168,7 +168,7 @@ export default class App extends React.Component {
             onPress={() => {
               this._registerAnswer(question, false)
             }}
-            title="no"
+            title={question.noLabel ? question.noLabel : 'No'}
           />
         </View>
       </View>
