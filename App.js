@@ -94,6 +94,7 @@ export default class App extends React.Component {
       await AsyncStorage.removeItem('@StateStore:state');
       await AsyncStorage.removeItem('@UserPreferences:isSmoker');
       await AsyncStorage.removeItem('@UserPreferences:drinksAlcohol');
+      await AsyncStorage.removeItem("@Notifications:notificationsScheduled");
     } catch (error) {
       console.log(error)
       // Error saving data
