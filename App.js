@@ -29,9 +29,7 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    await Notifier.stopNotifications();
-    Notifier.startAllNotifications();
-
+    this.scheduleNotifications()
     // Set initial questions
     let questions = []
       .concat(Object.values(Questions.prenoon))
@@ -52,7 +50,6 @@ export default class App extends React.Component {
       answeredQuestions = storedState.answeredQuestions
     }
 
-    console.log(isSmoker)
     if (isSmoker !== null) {
       this.setState({ isSmoker })
     }
@@ -124,6 +121,20 @@ export default class App extends React.Component {
   async saveDrinksAlcohol(drinksAlcohol) {
     try {
       await AsyncStorage.setItem("@UserPreferences:drinksAlcohol", JSON.stringify(drinksAlcohol))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async scheduleNotifications() {
+    try {
+      const notificationsScheduled = await this.getStateFromStore("@Notifications:notificationsScheduled");
+      if (!notificationsScheduled) {
+        await Notifier.stopNotifications();
+        await Notifier.startAllNotifications();
+        await AsyncStorage.setItem("@Notifications:notificationsScheduled", 
+                                    JSON.stringify({notificationsScheduled: true}));
+      }
     } catch (error) {
       console.log(error)
     }
