@@ -5,6 +5,13 @@ export default {
     current_max_id: 84,
     prenoon: {
         // Default questions
+        has_worked: {
+            id: 85,
+            type: 'boolean',
+            question: 'Have you worked before lunch?',
+            session: 1,
+            dependants: [1, 2, 3, 6, 16, 17]
+        },
         had_break: {
             id: 1,
             type: 'boolean',
@@ -171,6 +178,13 @@ export default {
     },
     postnoon: {
         // Default questions
+        has_worked: {
+            id: 86,
+            type: 'boolean',
+            question: 'Have you worked before dinner?',
+            session: 2,
+            dependants: [21, 22, 23, 26]
+        },
         had_break: {
             id: 21,
             type: 'boolean',
@@ -241,7 +255,7 @@ export default {
         eaten_sweets: {
             id: 32,
             type: 'boolean',
-            question: 'Have eaten any sweets before breakfast?',
+            question: 'Have eaten any sweets before dinner?',
             session: 2
         },
 
@@ -293,13 +307,13 @@ export default {
         stressed: {
             id: 34,
             type: 'scale',
-            question: 'How stressed did you feel before lunch?',
+            question: 'How stressed did you feel before dinner?',
             session: 2
         },
         well_being: {
             id: 33,
             type: 'scale',
-            question: 'Overall how did you feel before lunch?',
+            question: 'Overall how did you feel before dinner?',
             session: 2
         },
         comment: {
@@ -311,6 +325,13 @@ export default {
     },
     evening: {
         // Default questions
+        has_worked: {
+            id: 87,
+            type: 'boolean',
+            question: 'Have you worked after dinner?',
+            session: 3,
+            dependants: [37, 38, 39, 42]
+        },
         had_break: {
             id: 37,
             type: 'boolean',
