@@ -74,6 +74,7 @@ export default class App extends React.Component {
       // Configure an AJAX library (see below) with that client 
       FEATHERS_APP.configure(restClient.fetch(window.fetch));
     } catch (error) {
+      alert('Could not establish connection to backend')
       console.warn('Could not establish connection to backend')
     }
   }
@@ -147,6 +148,7 @@ export default class App extends React.Component {
       }, this.saveState)
 
     } catch (error) {
+      alert('Could not send response to backend')
       console.warn('Could not send response to backend')
     }
 
