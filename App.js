@@ -19,8 +19,8 @@ let FEATHERS_APP = undefined
 export default class App extends React.Component {
 
   state = {
-    isSmoker: undefined,
-    drinksAlcohol: undefined,
+    isSmoker: null,
+    drinksAlcohol: null,
     questions: [],
     answeredQuestions: [],
     textInput: "",
@@ -29,7 +29,6 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-
     await Notifier.stopNotifications();
     Notifier.startAllNotifications();
 
@@ -40,16 +39,29 @@ export default class App extends React.Component {
     const askDinner = true;
     const askAllDay = true;
     if (askMorning) questions = questions.concat(Object.values(Questions.morning))
+    console.log("About to fix questions")
     if (askLunch) questions = questions.concat(Object.values(Questions.lunch))
     if (askDinner) questions = questions.concat(Object.values(Questions.dinner))
     if (askAllDay) questions = questions.concat(Object.values(Questions.all_day))
 
     let answeredQuestions = []
 
-    const storedState = await this.getState()
+    console.log("About to get state")
+
+    const storedState = await this.getStateFromStore('@StateStore:state');
+    const isSmoker = await this.getStateFromStore('@UserPreferences:isSmoker');
+    const drinksAlcohol = await this.getStateFromStore('@UserPreferences:drinksAlcohol');
     if (storedState !== null && storedState.currentDate === this.state.currentDate) {
       answeredQuestions = storedState.answeredQuestions
-      this.setState({ isSmoker: storedState.isSmoker, drinksAlcohol: storedState.drinksAlcohol })
+    }
+
+    console.log(isSmoker)
+    if (isSmoker !== null) {
+      this.setState({isSmoker})
+    }
+
+    if (drinksAlcohol !== null) {
+      this.setState({drinksAlcohol})
     }
 
     questions = questions.filter(q => !answeredQuestions.includes(q.id))
@@ -97,9 +109,29 @@ export default class App extends React.Component {
     }
   }
 
-  async getState() {
+  async saveIsSmoker(isSmoker) {
     try {
-      const result = await AsyncStorage.getItem('@StateStore:state');
+      await AsyncStorage.setItem("@UserPreferences:isSmoker", JSON.stringify(isSmoker))
+      console.log("Saved smoker")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async saveDrinksAlcohol(drinksAlcohol) {
+    try {
+      await AsyncStorage.setItem("@UserPreferences:drinksAlcohol", JSON.stringify(drinksAlcohol))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+
+  async getStateFromStore(store) {
+    try {
+      const result = await AsyncStorage.getItem(store);
+      console.log("GETTING STATE FROM STORE", store)
+      console.log(result)
       if (result === null) {
         return null
       }
@@ -112,10 +144,12 @@ export default class App extends React.Component {
   }
 
   async _setDrinksAlcohol(drinksAlcohol) {
-    await this.setState({ drinksAlcohol }, this.saveState);
+    await this.saveDrinksAlcohol(drinksAlcohol);
+    this.setState({ drinksAlcohol }, this.saveState);
   }
   async _setIsSmoker(isSmoker) {
-    await this.setState({ isSmoker }, this.saveState);
+    await this.saveIsSmoker(isSmoker);
+    this.setState({ isSmoker }, this.saveState);
   }
 
   _registerAnswer(question, answer) {
@@ -269,13 +303,13 @@ export default class App extends React.Component {
   render() {
     const question = this.state.questions[0]
 
-    if (this.state.isSmoker === undefined) {
+    if (this.state.isSmoker === null) {
       return (
         this._renderIsSmoker()
       )
     }
 
-    if (this.state.drinksAlcohol === undefined) {
+    if (this.state.drinksAlcohol === null) {
       return (
         this._renderDrinksAlcohol()
       )
