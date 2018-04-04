@@ -223,7 +223,7 @@ export default {
         too_much_coffee: {
             id: 36,
             type: 'boolean',
-            question: '(LUNCH) Har du druckit mer än två koppar kaffe?',
+            question: 'Have you had more than two cups of coffee this afternoon?',
             session: 2
         },
     },
@@ -324,7 +324,7 @@ export default {
         too_much_coffee: {
             id: 52,
             type: 'boolean',
-            question: '(DINNER) Har du druckit mer än två koppar kaffe?',
+            question: 'Have you had more than two cups of coffee since dinner?',
             session: 3
         }
     },
@@ -332,32 +332,34 @@ export default {
         productive_before_lunch: {
             id: 53,
             type: 'boolean',
-            question: '(ALL DAY) När jobbade du med det mest utmanande under dagen? (Innan lunch / Efter Lunch)',
-            session: 3
+            question: 'When did you do the most challenging tasks today?',
+            session: 3,
+            yesLabel: 'Before lunch',
+            noLabel: 'After Lunch'
         },
 
         too_much_tv: {
             id: 54,
             type: 'boolean',
-            question: '(ALL DAY) Har du kollat på TV / Netflix / YouTube mer än en timme idag?',
+            question: 'Have you wathed TV / Netflix / YouTube more than one hour during the whole day?',
             session: 3
         },
         too_much_social_media: {
             id: 55,
             type: 'boolean',
-            question: '(ALL DAY) Har du kollat publika sociala media kanaler mer än ... idag?',
+            question: 'Have you browsed public social media channels more than 30 minutes during the whole day?',
             session: 3
         },
         regret_did_accept_task: {
             id: 56,
             type: 'boolean',
-            question: '(ALL DAY) Har du tagit dig an att göra något, som du nu ångrar?',
+            question: 'Have you agreed to do a task today, that you now regret?',
             session: 3
         },
         had_enough_water: {
             id: 57,
             type: 'boolean',
-            question: '(ALL DAY) Har du druckit två liter vatten eller mer idag?',
+            question: 'Have you drunk at least two liters of water during the whole day?',
             session: 3
         },
         well_being: {
@@ -369,13 +371,13 @@ export default {
         stressed: {
             id: 59,
             type: 'scale',
-            question: '(ALL DAY) Har du känt dig stressad idag? ( 1 - 4 )',
+            question: 'How stressed have you felt during the whole day?',
             session: 3
         },
         comment: {
             id: 60,
             type: 'text',
-            question: '(ALL DAY) Kommentar för din egen skull ( Fritext )',
+            question: 'Here you can write a comment, summarizing the whole day',
             session: 3
         },
     }
