@@ -21,7 +21,7 @@ export default class App extends React.Component {
   state = {
     isSmoker: undefined,
     drinksAlcohol: undefined,
-    questions: [],
+    questions: [{ question: 'Loading your questions...' }],
     answeredQuestions: [],
     textInput: "",
     currentDate: new Date().getDate(),
@@ -35,25 +35,23 @@ export default class App extends React.Component {
 
     // Set initial questions
     let questions = []
-    const askMorning = true;
-    const askLunch = true;
-    const askDinner = true;
-    const askAllDay = true;
-    if (askMorning) questions = questions.concat(Object.values(Questions.morning))
-    if (askLunch) questions = questions.concat(Object.values(Questions.lunch))
-    if (askDinner) questions = questions.concat(Object.values(Questions.dinner))
-    if (askAllDay) questions = questions.concat(Object.values(Questions.all_day))
+      .concat(Object.values(Questions.prenoon))
+      .concat(Object.values(Questions.postnoon))
+      .concat(Object.values(Questions.evening))
+      .concat(Object.values(Questions.allday))
 
+    // Sort questions, making sure questions for the earlier session comes first
+    questions.sort((a, b) => a.session >= b.session)
+
+    // Remove questions that has already been answered today
     let answeredQuestions = []
-
     const storedState = await this.getState()
     if (storedState !== null && storedState.currentDate === this.state.currentDate) {
       answeredQuestions = storedState.answeredQuestions
       this.setState({ isSmoker: storedState.isSmoker, drinksAlcohol: storedState.drinksAlcohol })
     }
-
     questions = questions.filter(q => !answeredQuestions.includes(q.id))
-    console.log(storedState)
+
     this.setState({
       questions: questions,
       answeredQuestions: answeredQuestions,
@@ -63,17 +61,21 @@ export default class App extends React.Component {
     /**
      * Configure feathers app
      */
-    FEATHERS_APP = feathers();
-    // Connect to a different URL
-    let URI = null
-    if (process.env.NODE_ENV === 'production') {
-      URI = 'https://mobile-computing-project.herokuapp.com'
-    } else {
-      URI = 'http://143.248.217.57:3030'
+    try {
+      FEATHERS_APP = feathers();
+      // Connect to a different URL
+      let URI = null
+      if (process.env.NODE_ENV === 'production') {
+        URI = 'https://mobile-computing-project.herokuapp.com'
+      } else {
+        URI = 'http://143.248.217.57:3030'
+      }
+      const restClient = rest(URI)
+      // Configure an AJAX library (see below) with that client 
+      FEATHERS_APP.configure(restClient.fetch(window.fetch));
+    } catch (error) {
+      console.warn('Could not establish connection to backend')
     }
-    const restClient = rest(URI)
-    // Configure an AJAX library (see below) with that client 
-    FEATHERS_APP.configure(restClient.fetch(window.fetch));
   }
 
   /**
@@ -121,23 +123,29 @@ export default class App extends React.Component {
   _registerAnswer(question, answer) {
     // Save answer in backend
     const date = moment()
-    FEATHERS_APP.service('entries').create({
-      question: question.question,
-      question_id: question.id,
-      answer: answer,
-      date: date.format('DD/MM/YYYY'), // TODO: Is this how we wanna represent date?
-      time: date.format('HH:mm'), // TODO: Is this how we wanna represent time?
-      user_id: this.state.token
-    })
+    try {
+      FEATHERS_APP.service('entries').create({
+        question: question.question,
+        question_id: question.id,
+        answer: answer,
+        date: date.format('DD/MM/YYYY'), // TODO: Is this how we wanna represent date?
+        time: date.format('HH:mm'), // TODO: Is this how we wanna represent time?
+        user_id: this.state.token
+      })
 
-    // Set the question as answered
-    const answeredQuestions = this.state.answeredQuestions.concat([question.id])
-    const questions = this.state.questions.slice(1)
-    this.setState({
-      answeredQuestions: answeredQuestions,
-      questions: questions,
-      textInput: ""
-    }, this.saveState)
+      // Set the question as answered
+      const answeredQuestions = this.state.answeredQuestions.concat([question.id])
+      const questions = this.state.questions.slice(1)
+      this.setState({
+        answeredQuestions: answeredQuestions,
+        questions: questions,
+        textInput: ""
+      }, this.saveState)
+
+    } catch (error) {
+      console.warn('Could not send response to backend')
+    }
+
   }
 
   _renderYesNoButtons(question) {
@@ -267,8 +275,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    const question = this.state.questions[0]
-
+    /**
+     * Ask initial questions
+     */
     if (this.state.isSmoker === undefined) {
       return (
         this._renderIsSmoker()
@@ -281,6 +290,23 @@ export default class App extends React.Component {
       )
     }
 
+    /**
+     * Render questions
+     */
+    let question = this.state.questions[0]
+
+    // Make sure we do not show questions that should be saved for later this day
+    if (question && question.session) {
+      const currentTime = moment()
+      if (question.session === 1 && currentTime.isBefore(moment().hour(11).minute(0))) {
+        question = undefined
+      } else if (question.session === 2 && currentTime.isBefore(moment().hour(17).minute(0))) {
+        question = undefined
+      } else if (question.session === 3 && currentTime.isBefore(moment().hour(20).minute(0))) {
+        question = undefined
+      }
+    }
+
     if (!question) {
       return (
         <View style={styles.container}>
@@ -289,10 +315,9 @@ export default class App extends React.Component {
       )
     }
 
-    // {question.type === 'text' && this._renderTextInput()}
     return (
       <View style={styles.container}>
-        <Text>Question: {question.question}</Text>
+        <Text>{question.question}</Text>
         {question.type === 'boolean' && this._renderYesNoButtons(question)}
         {question.type === 'scale' && this._renderScaleButtons(question)}
         {question.type === 'text' && this._renderTextInput(question)}
