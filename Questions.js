@@ -1,6 +1,8 @@
 import QuestionID from './util/QuestionID'
 
 export default {
+    // Please update this as you add new questions
+    current_max_id: 78,
     prenoon: {
         // Default questions
         had_break: {
@@ -75,22 +77,58 @@ export default {
             question: 'Have eaten any sweets before breakfast?',
             session: 1
         },
-        well_being: {
-            id: 13,
+        happy: {
+            id: 61,
             type: 'scale',
-            question: 'Hur mår du? ( 1 - 4 )',
+            question: 'How happy did you feel before lunch?',
+            session: 1
+        },
+        productive: {
+            id: 62,
+            type: 'scale',
+            question: 'How productive have you been before lunch?',
+            session: 1
+        },
+        headache: {
+            id: 63,
+            type: 'scale',
+            question: 'How much headache have you had before lunch?',
+            session: 1
+        },
+        sad: {
+            id: 64,
+            type: 'scale',
+            question: 'How sad did you feel before lunch?',
+            session: 1
+        },
+        angry: {
+            id: 65,
+            type: 'scale',
+            question: 'How angry did you feel before lunch?',
+            session: 1
+        },
+        calm: {
+            id: 66,
+            type: 'scale',
+            question: 'How calm did you feel before lunch?',
             session: 1
         },
         stressed: {
             id: 14,
             type: 'scale',
-            question: 'Känner du dig stressad? ( 1 - 4 )',
+            question: 'How stressed did you feel before lunch?',
+            session: 1
+        },
+        well_being: {
+            id: 13,
+            type: 'scale',
+            question: 'Overall how did you feel before lunch?',
             session: 1
         },
         comment: {
             id: 15,
             type: 'text',
-            question: 'Comment Kommentar för din egen skull ( Fritext )',
+            question: 'Optional Comment',
             session: 1
         },
 
@@ -200,22 +238,58 @@ export default {
             question: 'Have eaten any sweets before breakfast?',
             session: 2
         },
-        well_being: {
-            id: 33,
+        happy: {
+            id: 67,
             type: 'scale',
-            question: '(LUNCH) Hur mår du? ( 1 - 4 )',
+            question: 'How happy did you feel before dinner?',
+            session: 2
+        },
+        productive: {
+            id: 68,
+            type: 'scale',
+            question: 'How productive have you been before dinner?',
+            session: 2
+        },
+        headache: {
+            id: 69,
+            type: 'scale',
+            question: 'How much headache have you had before dinner?',
+            session: 2
+        },
+        sad: {
+            id: 70,
+            type: 'scale',
+            question: 'How sad did you feel before dinner?',
+            session: 2
+        },
+        angry: {
+            id: 71,
+            type: 'scale',
+            question: 'How angry did you feel before dinner?',
+            session: 2
+        },
+        calm: {
+            id: 72,
+            type: 'scale',
+            question: 'How calm did you feel before dinner?',
             session: 2
         },
         stressed: {
             id: 34,
             type: 'scale',
-            question: '(LUNCH) Känner du dig stressad? ( 1 - 4 )',
+            question: 'How stressed did you feel before lunch?',
+            session: 2
+        },
+        well_being: {
+            id: 33,
+            type: 'scale',
+            question: 'Overall how did you feel before lunch?',
             session: 2
         },
         comment: {
             id: 35,
             type: 'text',
-            question: '(LUNCH) Kommentar för din egen skull ( Fritext )',
+            question: 'Optional Comment',
             session: 2
         },
 
@@ -301,22 +375,58 @@ export default {
             question: 'Have eaten any sweets after dinner?',
             session: 3
         },
+        happy: {
+            id: 73,
+            type: 'scale',
+            question: 'How happy did you feel after dinner?',
+            session: 3
+        },
+        productive: {
+            id: 74,
+            type: 'scale',
+            question: 'How productive have you been after dinner?',
+            session: 3
+        },
+        headache: {
+            id: 75,
+            type: 'scale',
+            question: 'How much headache have you had after dinner?',
+            session: 3
+        },
+        sad: {
+            id: 76,
+            type: 'scale',
+            question: 'How sad did you feel after dinner?',
+            session: 3
+        },
+        angry: {
+            id: 77,
+            type: 'scale',
+            question: 'How angry did you feel after dinner?',
+            session: 3
+        },
+        calm: {
+            id: 78,
+            type: 'scale',
+            question: 'How calm did you feel after dinner?',
+            session: 3
+        },
         well_being: {
             id: 49,
             type: 'scale',
-            question: '(DINNER) Hur mår du? ( 1 - 4 )',
+            question: 'How stressed did you feel after dinner?',
             session: 3
         },
         stressed: {
             id: 50,
             type: 'scale',
-            question: '(DINNER) Känner du dig stressad? ( 1 - 4 )',
+            question: 'Overall how did you feel after dinner?',
             session: 3
         },
         comment: {
             id: 51,
             type: 'text',
-            question: '(DINNER) Kommentar för din egen skull ( Fritext )',
+            question: 'Optional Comment',
             session: 3
         },
 
@@ -365,7 +475,7 @@ export default {
         well_being: {
             id: 58,
             type: 'scale',
-            question: 'All in all, how would you say you have felt today? ( 1 - 4 )',
+            question: 'All in all, how would you say you have felt today?',
             session: 3
         },
         stressed: {
