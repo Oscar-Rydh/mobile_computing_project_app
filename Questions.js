@@ -365,7 +365,7 @@ export default {
         well_being: {
             id: 58,
             type: 'scale',
-            question: '(ALL DAY) Hur har du mått idag? ( 1 - 4 )',
+            question: 'All in all, how would you say you have felt today? ( 1 - 4 )',
             session: 3
         },
         stressed: {
