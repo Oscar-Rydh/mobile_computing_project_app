@@ -40,7 +40,6 @@ export default class App extends React.Component {
     // Sort questions, making sure questions for the earlier session comes first
     questions.sort((a, b) => a.session >= b.session)
 
-
     let answeredQuestions = this.state.answeredQuestions;
     const storedState = await this.getStateFromStore('@StateStore:state');
     const isSmoker = await this.getStateFromStore('@UserPreferences:isSmoker');
@@ -133,8 +132,8 @@ export default class App extends React.Component {
       if (!notificationsScheduled) {
         await Notifier.stopNotifications();
         await Notifier.startAllNotifications();
-        await AsyncStorage.setItem("@Notifications:notificationsScheduled", 
-                                    JSON.stringify({notificationsScheduled: true}));
+        await AsyncStorage.setItem("@Notifications:notificationsScheduled",
+          JSON.stringify({ notificationsScheduled: true }));
       }
     } catch (error) {
       console.log(error)
