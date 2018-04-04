@@ -45,7 +45,8 @@ export default {
             id: 7,
             type: 'boolean',
             question: 'Did you eat breakfast?',
-            session: 1
+            session: 1,
+            dependants: [8]
         },
         is_super_full: {
             id: 8,
@@ -95,7 +96,8 @@ export default {
             id: 18,
             type: 'boolean',
             question: '( if nykterist ) Did you drink alcohol yesterday?',
-            session: 1
+            session: 1,
+            dependants: [19]
         },
         was_drunk_yesterday: {
             id: 19,
@@ -209,7 +211,8 @@ export default {
             id: 27,
             type: 'boolean',
             question: 'Did you eat lunch?',
-            session: 2
+            session: 2,
+            dependants: [28]
         },
         is_super_full: {
             id: 28,
@@ -348,7 +351,8 @@ export default {
             id: 43,
             type: 'boolean',
             question: 'Did you eat dinner?',
-            session: 3
+            session: 3,
+            dependants: [44]
         },
         is_super_full: {
             id: 44,

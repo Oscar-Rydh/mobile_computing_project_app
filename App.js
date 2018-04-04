@@ -167,10 +167,14 @@ export default class App extends React.Component {
 
       // Set the question as answered
       const answeredQuestions = this.state.answeredQuestions.concat([question.id])
-      const questions = this.state.questions.slice(1)
+      let remainingQuestions = this.state.questions.slice(1)
+      // Also remove the questions that depend on this question
+      if (question.dependants && answer === false) {
+        remainingQuestions = remainingQuestions.filter(q => !question.dependants.includes(q.id))
+      }
       this.setState({
         answeredQuestions: answeredQuestions,
-        questions: questions,
+        questions: remainingQuestions,
         textInput: ""
       }, this.saveState)
 
@@ -188,7 +192,7 @@ export default class App extends React.Component {
             onPress={() => {
               this._registerAnswer(question, true)
             }}
-            title="yes"
+            title={question.yesLabel ? question.yesLabel : 'Yes'}
           />
         </View>
         <View style={styles.button} >
@@ -196,7 +200,7 @@ export default class App extends React.Component {
             onPress={() => {
               this._registerAnswer(question, false)
             }}
-            title="no"
+            title={question.noLabel ? question.noLabel : 'No'}
           />
         </View>
       </View>
