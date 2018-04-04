@@ -2,7 +2,7 @@ import QuestionID from './util/QuestionID'
 
 export default {
     // Please update this as you add new questions
-    current_max_id: 78,
+    current_max_id: 84,
     prenoon: {
         // Default questions
         had_break: {
@@ -77,6 +77,40 @@ export default {
             question: 'Have eaten any sweets before breakfast?',
             session: 1
         },
+
+        // Special for the morning
+        email_before_workout: {
+            id: 16,
+            type: 'boolean',
+            question: 'Did you check your email/socialmedia before you started to work this morning?',
+            session: 1
+        },
+        has_clear_daygoals: {
+            id: 17,
+            type: 'boolean',
+            question: 'Did plan your day before starting to work this morning?',
+            session: 1
+        },
+        had_alcohol_yesterday: {
+            id: 18,
+            type: 'boolean',
+            question: '( if nykterist ) Did you drink alcohol yesterday?',
+            session: 1
+        },
+        was_drunk_yesterday: {
+            id: 19,
+            type: 'boolean',
+            question: 'Did you get drunk yesterday?',
+            session: 1
+        },
+        had_enough_sleep: {
+            id: 20,
+            type: 'boolean',
+            question: 'Did you sleep more than eight hours last night?',
+            session: 1
+        },
+
+        // Feeling questions
         happy: {
             id: 61,
             type: 'scale',
@@ -132,37 +166,6 @@ export default {
             session: 1
         },
 
-        // Special for the morning
-        email_before_workout: {
-            id: 16,
-            type: 'boolean',
-            question: 'Did you check your email/socialmedia before you started to work this morning?',
-            session: 1
-        },
-        has_clear_daygoals: {
-            id: 17,
-            type: 'boolean',
-            question: 'Did plan your day before starting to work this morning?',
-            session: 1
-        },
-        had_alcohol_yesterday: {
-            id: 18,
-            type: 'boolean',
-            question: '( if nykterist ) Did you drink alcohol yesterday?',
-            session: 1
-        },
-        was_drunk_yesterday: {
-            id: 19,
-            type: 'boolean',
-            question: 'Did you get drunk yesterday?',
-            session: 1
-        },
-        had_enough_sleep: {
-            id: 20,
-            type: 'boolean',
-            question: 'Did you sleep more than eight hours last night?',
-            session: 1
-        }
     },
     postnoon: {
         // Default questions
@@ -238,6 +241,16 @@ export default {
             question: 'Have eaten any sweets before breakfast?',
             session: 2
         },
+
+        // Special for postnoon
+        too_much_coffee: {
+            id: 36,
+            type: 'boolean',
+            question: 'Have you had more than two cups of coffee this afternoon?',
+            session: 2
+        },
+
+        // Feeling questions
         happy: {
             id: 67,
             type: 'scale',
@@ -290,14 +303,6 @@ export default {
             id: 35,
             type: 'text',
             question: 'Optional Comment',
-            session: 2
-        },
-
-        // Special for lunch
-        too_much_coffee: {
-            id: 36,
-            type: 'boolean',
-            question: 'Have you had more than two cups of coffee this afternoon?',
             session: 2
         },
     },
@@ -375,6 +380,16 @@ export default {
             question: 'Have eaten any sweets after dinner?',
             session: 3
         },
+
+        // Special for evening
+        too_much_coffee: {
+            id: 52,
+            type: 'boolean',
+            question: 'Have you had more than two cups of coffee since dinner?',
+            session: 3
+        },
+
+        // Feeling questions
         happy: {
             id: 73,
             type: 'scale',
@@ -411,14 +426,14 @@ export default {
             question: 'How calm did you feel after dinner?',
             session: 3
         },
-        well_being: {
-            id: 49,
+        stressed: {
+            id: 50,
             type: 'scale',
             question: 'How stressed did you feel after dinner?',
             session: 3
         },
-        stressed: {
-            id: 50,
+        well_being: {
+            id: 49,
             type: 'scale',
             question: 'Overall how did you feel after dinner?',
             session: 3
@@ -427,14 +442,6 @@ export default {
             id: 51,
             type: 'text',
             question: 'Optional Comment',
-            session: 3
-        },
-
-        // Special for dinner
-        too_much_coffee: {
-            id: 52,
-            type: 'boolean',
-            question: 'Have you had more than two cups of coffee since dinner?',
             session: 3
         }
     },
@@ -447,7 +454,6 @@ export default {
             yesLabel: 'Before lunch',
             noLabel: 'After Lunch'
         },
-
         too_much_tv: {
             id: 54,
             type: 'boolean',
@@ -472,16 +478,52 @@ export default {
             question: 'Have you drunk at least two liters of water during the whole day?',
             session: 3
         },
-        well_being: {
-            id: 58,
+        happy: {
+            id: 79,
             type: 'scale',
-            question: 'All in all, how would you say you have felt today?',
+            question: 'How happy have you felt during the whole day?',
+            session: 3
+        },
+        productive: {
+            id: 80,
+            type: 'scale',
+            question: 'How productive have you been during the whole day?',
+            session: 3
+        },
+        headache: {
+            id: 81,
+            type: 'scale',
+            question: 'How much headache have had during the whole day?',
+            session: 3
+        },
+        sad: {
+            id: 82,
+            type: 'scale',
+            question: 'How sad have you felt during the whole day?',
+            session: 3
+        },
+        angry: {
+            id: 83,
+            type: 'scale',
+            question: 'How angry have you felt during the whole day?',
+            session: 3
+        },
+        calm: {
+            id: 84,
+            type: 'scale',
+            question: 'How calm have you felt during the whole day?',
             session: 3
         },
         stressed: {
             id: 59,
             type: 'scale',
             question: 'How stressed have you felt during the whole day?',
+            session: 3
+        },
+        well_being: {
+            id: 58,
+            type: 'scale',
+            question: 'Overall, how have you felt during the whole day?',
             session: 3
         },
         comment: {
