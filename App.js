@@ -31,7 +31,7 @@ export default class App extends React.Component {
   async componentDidMount() {
     await Notifier.stopNotifications();
     Notifier.startAllNotifications();
-    
+
     // Set initial questions
     let questions = []
       .concat(Object.values(Questions.prenoon))
@@ -40,25 +40,25 @@ export default class App extends React.Component {
       .concat(Object.values(Questions.allday))
 
     // Sort questions, making sure questions for the earlier session comes first
-    questions.sort((a, b) => a.session >= b.session)    
-    
+    questions.sort((a, b) => a.session >= b.session)
+
 
     let answeredQuestions = this.state.answeredQuestions;
     const storedState = await this.getStateFromStore('@StateStore:state');
     const isSmoker = await this.getStateFromStore('@UserPreferences:isSmoker');
     const drinksAlcohol = await this.getStateFromStore('@UserPreferences:drinksAlcohol');
-  
+
     if (storedState !== null && storedState.currentDate === this.state.currentDate) {
       answeredQuestions = storedState.answeredQuestions
     }
 
     console.log(isSmoker)
     if (isSmoker !== null) {
-      this.setState({isSmoker})
+      this.setState({ isSmoker })
     }
 
     if (drinksAlcohol !== null) {
-      this.setState({drinksAlcohol})
+      this.setState({ drinksAlcohol })
     }
     questions = questions.filter(q => !answeredQuestions.includes(q.id))
 
@@ -128,7 +128,7 @@ export default class App extends React.Component {
       console.log(error)
     }
   }
-  
+
 
   async getStateFromStore(store) {
     try {
@@ -167,11 +167,14 @@ export default class App extends React.Component {
       })
 
       // Set the question as answered
-      const answeredQuestions = this.state.answeredQuestions.concat([question.id])
+      let answeredQuestions = this.state.answeredQuestions.concat([question.id])
       let remainingQuestions = this.state.questions.slice(1)
       // Also remove the questions that depend on this question
       if (question.dependants && answer === false) {
         remainingQuestions = remainingQuestions.filter(q => !question.dependants.includes(q.id))
+        question.dependants.forEach(q => {
+          answeredQuestions = answeredQuestions.concat([q.id])
+        })
       }
       this.setState({
         answeredQuestions: answeredQuestions,
