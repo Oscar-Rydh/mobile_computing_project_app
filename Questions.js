@@ -63,7 +63,7 @@ export default {
         did_smoke: {
             id: 10,
             type: 'boolean',
-            question: '( if smoker ) Have you been smoking before lunch?',
+            question: 'Have you been smoking before lunch?',
             session: 1
         },
         did_workout: {
@@ -95,7 +95,7 @@ export default {
         had_alcohol_yesterday: {
             id: 18,
             type: 'boolean',
-            question: '( if nykterist ) Did you drink alcohol yesterday?',
+            question: 'Did you drink alcohol yesterday?',
             session: 1,
             dependants: [19]
         },
@@ -229,7 +229,7 @@ export default {
         did_smoke: {
             id: 30,
             type: 'boolean',
-            question: '( if smoker ) Have you been smoking before dinner?',
+            question: 'Have you been smoking before dinner?',
             session: 2
         },
         did_workout: {
@@ -326,13 +326,13 @@ export default {
         was_interruppted: {
             id: 39,
             type: 'boolean',
-            question: 'Have you postponed something you could have done after dinner?',
+            question: 'Have you been disturbed by your phone or similar when working after dinner?',
             session: 3
         },
         did_procastinate: {
             id: 40,
             type: 'boolean',
-            question: '(DINNER) Har du skjutit fram något som du skulle kunnat göra nu?',
+            question: 'Have you postponed something you could have done after dinner?',
             session: 3
         },
         did_lie: {
@@ -369,7 +369,7 @@ export default {
         did_smoke: {
             id: 46,
             type: 'boolean',
-            question: '( if smoker ) Have you been smoking after dinner?',
+            question: 'Have you been smoking after dinner?',
             session: 3
         },
         did_workout: {
