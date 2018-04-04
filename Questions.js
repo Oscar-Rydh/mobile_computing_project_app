@@ -1,7 +1,7 @@
 import QuestionID from './util/QuestionID'
 
 export default {
-    morning: {
+    prenoon: {
         // Default questions
         had_break: {
             id: 1,
@@ -126,7 +126,7 @@ export default {
             session: 1
         }
     },
-    lunch: {
+    postnoon: {
         // Default questions
         had_break: {
             id: 21,
@@ -227,7 +227,7 @@ export default {
             session: 2
         },
     },
-    dinner: {
+    evening: {
         // Default questions
         had_break: {
             id: 37,
@@ -328,55 +328,55 @@ export default {
             session: 3
         }
     },
-    all_day: {
+    allday: {
         productive_before_lunch: {
             id: 53,
             type: 'boolean',
             question: '(ALL DAY) När jobbade du med det mest utmanande under dagen? (Innan lunch / Efter Lunch)',
-            session: 4
+            session: 3
         },
 
         too_much_tv: {
             id: 54,
             type: 'boolean',
             question: '(ALL DAY) Har du kollat på TV / Netflix / YouTube mer än en timme idag?',
-            session: 4
+            session: 3
         },
         too_much_social_media: {
             id: 55,
             type: 'boolean',
             question: '(ALL DAY) Har du kollat publika sociala media kanaler mer än ... idag?',
-            session: 4
+            session: 3
         },
         regret_did_accept_task: {
             id: 56,
             type: 'boolean',
             question: '(ALL DAY) Har du tagit dig an att göra något, som du nu ångrar?',
-            session: 4
+            session: 3
         },
         had_enough_water: {
             id: 57,
             type: 'boolean',
             question: '(ALL DAY) Har du druckit två liter vatten eller mer idag?',
-            session: 4
+            session: 3
         },
         well_being: {
             id: 58,
             type: 'scale',
             question: '(ALL DAY) Hur har du mått idag? ( 1 - 4 )',
-            session: 4
+            session: 3
         },
         stressed: {
             id: 59,
             type: 'scale',
             question: '(ALL DAY) Har du känt dig stressad idag? ( 1 - 4 )',
-            session: 4
+            session: 3
         },
         comment: {
             id: 60,
             type: 'text',
             question: '(ALL DAY) Kommentar för din egen skull ( Fritext )',
-            session: 4
+            session: 3
         },
     }
 }
