@@ -2,7 +2,7 @@ import QuestionID from './util/QuestionID'
 
 export default {
     // Please update this as you add new questions
-    current_max_id: 87,
+    current_max_id: 90,
     prenoon: {
         // Default questions
         has_worked: {
@@ -83,6 +83,12 @@ export default {
             id: 12,
             type: 'boolean',
             question: 'Have eaten any sweets before breakfast?',
+            session: 1
+        },
+        tired: {
+            id: 88,
+            type: 'boolean',
+            question: 'Have you felt tired before lunch?',
             session: 1
         },
 
@@ -258,6 +264,12 @@ export default {
             question: 'Have eaten any sweets before dinner?',
             session: 2
         },
+        tired: {
+            id: 89,
+            type: 'boolean',
+            question: 'Have you felt tired before dinner?',
+            session: 2
+        },
 
         // Special for postnoon
         too_much_coffee: {
@@ -403,6 +415,12 @@ export default {
             id: 48,
             type: 'boolean',
             question: 'Have eaten any sweets after dinner?',
+            session: 3
+        },
+        tired: {
+            id: 90,
+            type: 'boolean',
+            question: 'Have you felt tired after dinner?',
             session: 3
         },
 
