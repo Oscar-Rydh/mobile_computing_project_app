@@ -5,8 +5,8 @@ const Notifier = {
   startMorningNotification() {
     let now  = new Date();
     now.setDate(now.getDate() + 1)
-    now.setHours(9);
-    now.setMinutes(0);
+    now.setHours(11);
+    now.setMinutes(15);
     now.setMilliseconds(0);
     this._startNotification(now)
   },
@@ -14,8 +14,8 @@ const Notifier = {
   startLunchNotification() {
     let now  = new Date();
     now.setDate(now.getDate() + 1)
-    now.setHours(13);
-    now.setMinutes(0);
+    now.setHours(17);
+    now.setMinutes(15);
     now.setMilliseconds(0);
     this._startNotification(now)
   },
@@ -23,17 +23,8 @@ const Notifier = {
   startDinnerNotification() {
     let now  = new Date();
     now.setDate(now.getDate() + 1)
-    now.setHours(18);
-    now.setMinutes(0);
-    now.setMilliseconds(0);
-    this._startNotification(now)
-  },
-
-  startSummaryNotification() {
-    let now  = new Date();
-    now.setDate(now.getDate() + 1)
     now.setHours(22);
-    now.setMinutes(0);
+    now.setMinutes(15);
     now.setMilliseconds(0);
     this._startNotification(now)
   },
@@ -42,7 +33,6 @@ const Notifier = {
     this.startMorningNotification();
     this.startLunchNotification();
     this.startDinnerNotification();
-    this.startSummaryNotification();
   },
 
   _startNotification(date) {
