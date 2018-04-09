@@ -2,7 +2,7 @@ import QuestionID from './util/QuestionID'
 
 export default {
     // Please update this as you add new questions
-    current_max_id: 91,
+    current_max_id: 92,
     prenoon: {
         // Default questions
         has_worked: {
@@ -71,7 +71,7 @@ export default {
             id: 10,
             type: 'boolean',
             question: 'Have you been smoking before lunch?',
-            session: 1, 
+            session: 1,
             smokerSpecific: true
         },
         did_workout: {
@@ -100,6 +100,12 @@ export default {
             question: 'Did plan your day before starting to work this before lunch?',
             session: 1
         },
+        too_much_coffee: {
+            id: 92,
+            type: 'boolean',
+            question: 'Have you had more than two cups of coffee before lunch?',
+            session: 1
+        },
         had_alcohol_yesterday: {
             id: 18,
             type: 'boolean',
@@ -121,7 +127,6 @@ export default {
             question: 'Did you sleep more than eight hours last night?',
             session: 1
         },
-
         // Feeling questions
         happy: {
             id: 61,
