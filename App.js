@@ -17,7 +17,7 @@ const rest = require('@feathersjs/rest-client');
 let FEATHERS_APP = undefined
 
 export default class App extends React.Component {
-
+  
   state = {
     isSmoker: null,
     drinksAlcohol: null,
@@ -48,15 +48,20 @@ export default class App extends React.Component {
     if (storedState !== null && storedState.currentDate === this.state.currentDate) {
       answeredQuestions = storedState.answeredQuestions
     }
+    
+    
+    questions = questions.filter(q => !answeredQuestions.includes(q.id))
 
     if (isSmoker !== null) {
       this.setState({ isSmoker })
+      questions = this.filterIsSmoker(questions)
     }
 
     if (drinksAlcohol !== null) {
       this.setState({ drinksAlcohol })
     }
-    questions = questions.filter(q => !answeredQuestions.includes(q.id))
+    
+
 
     this.setState({
       questions: questions,
@@ -85,6 +90,17 @@ export default class App extends React.Component {
     }
   }
 
+
+  filterIsSmoker(questions) {
+    return questions.filter(q => {
+      const questionKeys = Object.keys(q)
+      if (!questionKeys.includes("smokerSpecific")) {
+        return q
+      } else if (this.state.isSmoker && q.smokerSpecific) {
+        return q
+      }
+    })
+  }
   /**
    * Used for testing
    */
@@ -162,6 +178,7 @@ export default class App extends React.Component {
   async _setIsSmoker(isSmoker) {
     await this.saveIsSmoker(isSmoker);
     this.setState({ isSmoker }, this.saveState);
+    this.setState({questions: this.filterIsSmoker(this.state.questions)})
   }
 
   _registerAnswer(question, answer) {
@@ -350,7 +367,7 @@ export default class App extends React.Component {
     // Make sure we do not show questions that should be saved for later this day
     if (question && question.session) {
       const currentTime = moment()
-      if (question.session === 1 && currentTime.isBefore(moment().hour(11).minute(0))) {
+      if (question.session === 1 && currentTime.isBefore(moment().hour(10).minute(0))) {
         question = undefined
       } else if (question.session === 2 && currentTime.isBefore(moment().hour(17).minute(0))) {
         question = undefined

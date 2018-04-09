@@ -71,7 +71,8 @@ export default {
             id: 10,
             type: 'boolean',
             question: 'Have you been smoking before lunch?',
-            session: 1
+            session: 1, 
+            smokerSpecific: true
         },
         did_workout: {
             id: 11,
@@ -244,7 +245,8 @@ export default {
             id: 30,
             type: 'boolean',
             question: 'Have you been smoking before dinner?',
-            session: 2
+            session: 2,
+            smokerSpecific: true
         },
         did_workout: {
             id: 31,
@@ -391,7 +393,8 @@ export default {
             id: 46,
             type: 'boolean',
             question: 'Have you been smoking after dinner?',
-            session: 3
+            session: 3,
+            smokerSpecific: true
         },
         did_workout: {
             id: 47,
