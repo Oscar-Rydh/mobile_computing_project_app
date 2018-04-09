@@ -64,7 +64,7 @@ export default {
         had_water: {
             id: 9,
             type: 'boolean',
-            question: 'Have you been drinking water regularly before breakfast?',
+            question: 'Have you been drinking water regularly before lunch?',
             session: 1
         },
         did_smoke: {
@@ -82,7 +82,7 @@ export default {
         eaten_sweets: {
             id: 12,
             type: 'boolean',
-            question: 'Have eaten any sweets before breakfast?',
+            question: 'Have eaten any sweets before lunch?',
             session: 1
         },
         tired: {
@@ -96,13 +96,13 @@ export default {
         email_before_workout: {
             id: 16,
             type: 'boolean',
-            question: 'Did you check your email/socialmedia before you started to work this morning?',
+            question: 'Did you check your email/socialmedia before you started to work before lunch?',
             session: 1
         },
         has_clear_daygoals: {
             id: 17,
             type: 'boolean',
-            question: 'Did plan your day before starting to work this morning?',
+            question: 'Did plan your day before starting to work this before lunch?',
             session: 1
         },
         had_alcohol_yesterday: {
