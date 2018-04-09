@@ -56,6 +56,10 @@ export default class App extends React.Component {
     if (drinksAlcohol !== null) {
       this.setState({ drinksAlcohol })
     }
+
+    // Remove hidden questions
+    questions = questions.filter(q => q.hidden !== true)
+    // Remove questions that has already been answered
     questions = questions.filter(q => !answeredQuestions.includes(q.id))
 
     this.setState({

@@ -142,7 +142,8 @@ export default {
             id: 63,
             type: 'scale',
             question: 'How much headache have you had before lunch?',
-            session: 1
+            session: 1,
+            hidden: true
         },
         sad: {
             id: 64,
@@ -296,7 +297,8 @@ export default {
             id: 69,
             type: 'scale',
             question: 'How much headache have you had before dinner?',
-            session: 2
+            session: 2,
+            hidden: true
         },
         sad: {
             id: 70,
@@ -449,7 +451,8 @@ export default {
             id: 75,
             type: 'scale',
             question: 'How much headache have you had after dinner?',
-            session: 3
+            session: 3,
+            hidden: true
         },
         sad: {
             id: 76,
@@ -537,7 +540,8 @@ export default {
             id: 81,
             type: 'scale',
             question: 'How much headache have had during the whole day?',
-            session: 3
+            session: 3,
+            hidden: true
         },
         sad: {
             id: 82,
