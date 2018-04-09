@@ -11,6 +11,7 @@ import Notifier from './util/notifier';
 import QuestionID from './util/QuestionID'
 import Questions from './Questions';
 import moment from 'moment';
+import { prodOrDevKey } from './util/asyncStorageKeyHelper';
 const feathers = require('@feathersjs/feathers');
 const rest = require('@feathersjs/rest-client');
 
@@ -59,9 +60,13 @@ export default class App extends React.Component {
 
     if (drinksAlcohol !== null) {
       this.setState({ drinksAlcohol })
+      questions = this.filterDrinksAlcohol(questions)
     }
-    
 
+    // Remove hidden questions
+    questions = questions.filter(q => q.hidden !== true)
+    // Remove questions that has already been answered
+    questions = questions.filter(q => !answeredQuestions.includes(q.id))
 
     this.setState({
       questions: questions,
@@ -101,15 +106,27 @@ export default class App extends React.Component {
       }
     })
   }
+
+  filterDrinksAlcohol(questions) {
+    return questions.filter(q => {
+      const questionKeys = Object.keys(q)
+      if (!questionKeys.includes("alcoholSpecific")) {
+        return q
+      } else if (this.state.drinksAlcohol && q.alcoholSpecific) {
+        return q
+      }
+    })
+  }
+
   /**
    * Used for testing
    */
   async resetState() {
     try {
-      await AsyncStorage.removeItem('@StateStore:state');
-      await AsyncStorage.removeItem('@UserPreferences:isSmoker');
-      await AsyncStorage.removeItem('@UserPreferences:drinksAlcohol');
-      await AsyncStorage.removeItem("@Notifications:notificationsScheduled");
+      await AsyncStorage.removeItem(prodOrDevKey('@StateStore:state'));
+      await AsyncStorage.removeItem(prodOrDevKey('@UserPreferences:isSmoker'));
+      await AsyncStorage.removeItem(prodOrDevKey('@UserPreferences:drinksAlcohol'));
+      await AsyncStorage.removeItem(prodOrDevKey("@Notifications:notificationsScheduled"));
     } catch (error) {
       console.log(error)
       // Error saving data
@@ -118,7 +135,7 @@ export default class App extends React.Component {
 
   async saveState() {
     try {
-      await AsyncStorage.setItem('@StateStore:state', JSON.stringify(this.state));
+      await AsyncStorage.setItem(prodOrDevKey('@StateStore:state'), JSON.stringify(this.state));
     } catch (error) {
       console.log(error)
       // Error saving data
@@ -127,7 +144,7 @@ export default class App extends React.Component {
 
   async saveIsSmoker(isSmoker) {
     try {
-      await AsyncStorage.setItem("@UserPreferences:isSmoker", JSON.stringify(isSmoker))
+      await AsyncStorage.setItem(prodOrDevKey("@UserPreferences:isSmoker"), JSON.stringify(isSmoker))
       console.log("Saved smoker")
     } catch (error) {
       console.log(error)
@@ -136,7 +153,7 @@ export default class App extends React.Component {
 
   async saveDrinksAlcohol(drinksAlcohol) {
     try {
-      await AsyncStorage.setItem("@UserPreferences:drinksAlcohol", JSON.stringify(drinksAlcohol))
+      await AsyncStorage.setItem(prodOrDevKey("@UserPreferences:drinksAlcohol"), JSON.stringify(drinksAlcohol))
     } catch (error) {
       console.log(error)
     }
@@ -148,7 +165,7 @@ export default class App extends React.Component {
       if (!notificationsScheduled) {
         await Notifier.stopNotifications();
         await Notifier.startAllNotifications();
-        await AsyncStorage.setItem("@Notifications:notificationsScheduled",
+        await AsyncStorage.setItem(prodOrDevKey("@Notifications:notificationsScheduled"),
           JSON.stringify({ notificationsScheduled: true }));
       }
     } catch (error) {
@@ -157,9 +174,9 @@ export default class App extends React.Component {
   }
 
 
-  async getStateFromStore(store) {
+  async getStateFromStore(key) {
     try {
-      const result = await AsyncStorage.getItem(store);
+      const result = await AsyncStorage.getItem(prodOrDevKey(key));
       if (result === null) {
         return null
       }
@@ -174,6 +191,7 @@ export default class App extends React.Component {
   async _setDrinksAlcohol(drinksAlcohol) {
     await this.saveDrinksAlcohol(drinksAlcohol);
     this.setState({ drinksAlcohol }, this.saveState);
+    this.setState({questions: this.filterDrinksAlcohol(this.state.questions)})
   }
   async _setIsSmoker(isSmoker) {
     await this.saveIsSmoker(isSmoker);

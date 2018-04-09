@@ -2,7 +2,7 @@ import QuestionID from './util/QuestionID'
 
 export default {
     // Please update this as you add new questions
-    current_max_id: 87,
+    current_max_id: 91,
     prenoon: {
         // Default questions
         has_worked: {
@@ -64,7 +64,7 @@ export default {
         had_water: {
             id: 9,
             type: 'boolean',
-            question: 'Have you been drinking water regularly before breakfast?',
+            question: 'Have you been drinking water regularly before lunch?',
             session: 1
         },
         did_smoke: {
@@ -83,7 +83,7 @@ export default {
         eaten_sweets: {
             id: 12,
             type: 'boolean',
-            question: 'Have eaten any sweets before breakfast?',
+            question: 'Have eaten any sweets before lunch?',
             session: 1
         },
 
@@ -91,13 +91,13 @@ export default {
         email_before_workout: {
             id: 16,
             type: 'boolean',
-            question: 'Did you check your email/socialmedia before you started to work this morning?',
+            question: 'Did you check your email/socialmedia before you started to work before lunch?',
             session: 1
         },
         has_clear_daygoals: {
             id: 17,
             type: 'boolean',
-            question: 'Did plan your day before starting to work this morning?',
+            question: 'Did plan your day before starting to work this before lunch?',
             session: 1
         },
         had_alcohol_yesterday: {
@@ -105,13 +105,15 @@ export default {
             type: 'boolean',
             question: 'Did you drink alcohol yesterday?',
             session: 1,
-            dependants: [19]
+            dependants: [19],
+            alcoholSpecific: true
         },
         was_drunk_yesterday: {
             id: 19,
             type: 'boolean',
             question: 'Did you get drunk yesterday?',
-            session: 1
+            session: 1,
+            alcoholSpecific: true
         },
         had_enough_sleep: {
             id: 20,
@@ -137,7 +139,8 @@ export default {
             id: 63,
             type: 'scale',
             question: 'How much headache have you had before lunch?',
-            session: 1
+            session: 1,
+            hidden: true
         },
         sad: {
             id: 64,
@@ -161,6 +164,12 @@ export default {
             id: 14,
             type: 'scale',
             question: 'How stressed did you feel before lunch?',
+            session: 1
+        },
+        tired: {
+            id: 88,
+            type: 'scale',
+            question: 'How tired did you feel before lunch?',
             session: 1
         },
         well_being: {
@@ -286,7 +295,8 @@ export default {
             id: 69,
             type: 'scale',
             question: 'How much headache have you had before dinner?',
-            session: 2
+            session: 2,
+            hidden: true
         },
         sad: {
             id: 70,
@@ -310,6 +320,12 @@ export default {
             id: 34,
             type: 'scale',
             question: 'How stressed did you feel before dinner?',
+            session: 2
+        },
+        tired: {
+            id: 89,
+            type: 'scale',
+            question: 'How tired did you feel before dinner?',
             session: 2
         },
         well_being: {
@@ -434,7 +450,8 @@ export default {
             id: 75,
             type: 'scale',
             question: 'How much headache have you had after dinner?',
-            session: 3
+            session: 3,
+            hidden: true
         },
         sad: {
             id: 76,
@@ -452,6 +469,12 @@ export default {
             id: 78,
             type: 'scale',
             question: 'How calm did you feel after dinner?',
+            session: 3
+        },
+        tired: {
+            id: 90,
+            type: 'scale',
+            question: 'How tired did you feel after dinner?',
             session: 3
         },
         stressed: {
@@ -522,7 +545,8 @@ export default {
             id: 81,
             type: 'scale',
             question: 'How much headache have had during the whole day?',
-            session: 3
+            session: 3,
+            hidden: true
         },
         sad: {
             id: 82,
@@ -546,6 +570,12 @@ export default {
             id: 59,
             type: 'scale',
             question: 'How stressed have you felt during the whole day?',
+            session: 3
+        },
+        tired: {
+            id: 91,
+            type: 'scale',
+            question: 'How tired have you felt during the whole day?',
             session: 3
         },
         well_being: {
