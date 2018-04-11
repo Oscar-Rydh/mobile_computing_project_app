@@ -30,6 +30,7 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    this.resetState();
     this.scheduleNotifications()
     // Set initial questions
     let questions = []
@@ -51,6 +52,9 @@ export default class App extends React.Component {
     }
     
     
+    // Remove hidden questions
+    questions = questions.filter(q => q.hidden !== true )
+    // Remove questions that has already been answered
     questions = questions.filter(q => !answeredQuestions.includes(q.id))
 
     if (isSmoker !== null) {
@@ -63,10 +67,6 @@ export default class App extends React.Component {
       questions = this.filterDrinksAlcohol(questions)
     }
 
-    // Remove hidden questions
-    questions = questions.filter(q => q.hidden !== true)
-    // Remove questions that has already been answered
-    questions = questions.filter(q => !answeredQuestions.includes(q.id))
 
     this.setState({
       questions: questions,
@@ -84,7 +84,7 @@ export default class App extends React.Component {
       if (process.env.NODE_ENV === 'production') {
         URI = 'https://mobile-computing-project.herokuapp.com'
       } else {
-        URI = 'http://143.248.217.57:3030'
+        URI = 'http://143.248.177.104:3030'
       }
       const restClient = rest(URI)
       // Configure an AJAX library (see below) with that client 
@@ -98,8 +98,7 @@ export default class App extends React.Component {
 
   filterIsSmoker(questions) {
     return questions.filter(q => {
-      const questionKeys = Object.keys(q)
-      if (!questionKeys.includes("smokerSpecific")) {
+      if (q.smokerSpecific === undefined) {
         return q
       } else if (this.state.isSmoker && q.smokerSpecific) {
         return q
@@ -109,10 +108,9 @@ export default class App extends React.Component {
 
   filterDrinksAlcohol(questions) {
     return questions.filter(q => {
-      const questionKeys = Object.keys(q)
-      if (!questionKeys.includes("alcoholSpecific")) {
+      if (q.alcoholSpecific === undefined) {
         return q
-      } else if (this.state.drinksAlcohol && q.alcoholSpecific) {
+      } else if (q.alcoholSpecific && this.state.drinksAlcohol ) {
         return q
       }
     })
@@ -218,8 +216,8 @@ export default class App extends React.Component {
       // Also remove the questions that depend on this question
       if (question.dependants && answer === false) {
         remainingQuestions = remainingQuestions.filter(q => !question.dependants.includes(q.id))
-        question.dependants.forEach(q => {
-          answeredQuestions = answeredQuestions.concat([q.id])
+        question.dependants.forEach(qId => {
+          answeredQuestions = answeredQuestions.concat([qId])
         })
       }
       this.setState({
