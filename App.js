@@ -30,7 +30,6 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    this.resetState();
     this.scheduleNotifications()
     // Set initial questions
     let questions = []
