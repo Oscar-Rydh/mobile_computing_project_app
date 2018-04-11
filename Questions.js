@@ -2,7 +2,7 @@ import QuestionID from './util/QuestionID'
 
 export default {
     // Please update this as you add new questions
-    current_max_id: 92,
+    current_max_id: 95,
     prenoon: {
         // Default questions
         has_worked: {
@@ -83,7 +83,7 @@ export default {
         eaten_sweets: {
             id: 12,
             type: 'boolean',
-            question: 'Have eaten any sweets before lunch?',
+            question: 'Have you eaten any sweets before lunch?',
             session: 1
         },
 
@@ -99,6 +99,13 @@ export default {
             type: 'boolean',
             question: 'Did plan your day before starting to work this before lunch?',
             session: 1
+        },
+        had_coffee: {
+            id: 93,
+            type: 'boolean',
+            question: 'Did you drink coffee before lunch?',
+            session: 1,
+            dependants: [92]
         },
         too_much_coffee: {
             id: 92,
@@ -274,12 +281,18 @@ export default {
             question: 'Have eaten any sweets before dinner?',
             session: 2
         },
-
+        had_coffe: {
+            id: 94,
+            type: 'boolean',
+            question: 'Did you drink coffee before dinner?',
+            session: 2,
+            dependants: [36]
+        },
         // Special for postnoon
         too_much_coffee: {
             id: 36,
             type: 'boolean',
-            question: 'Have you had more than two cups of coffee this afternoon?',
+            question: 'Have you had more than two cups of coffee before dinner?',
             session: 2
         },
 
@@ -429,12 +442,18 @@ export default {
             question: 'Have eaten any sweets after dinner?',
             session: 3
         },
-
+        had_coffee: {
+            id: 95,
+            type: 'boolean',
+            question: 'Did you drink coffee after dinner?',
+            session: 3,
+            dependants: [52]
+        },
         // Special for evening
         too_much_coffee: {
             id: 52,
             type: 'boolean',
-            question: 'Have you had more than two cups of coffee since dinner?',
+            question: 'Have you had more than two cups of coffee after dinner?',
             session: 3
         },
 
